@@ -24,6 +24,8 @@ import { BlurElementsController } from './controllers/blur-elements.controller';
         dbName: config.get("DB_NAME"),
         user: config.get("DB_USER"),
         password: config.get("DB_PASSWORD"),
+        host: config.get("DB_HOST"),
+        port: config.get("DB_PORT"),
         driver: PostgreSqlDriver,
       }),
       inject: [ConfigService]

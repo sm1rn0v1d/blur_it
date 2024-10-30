@@ -1,0 +1,36 @@
+version: "3.8"
+
+services:
+  backend:
+    build: .
+    restart: unless-stopped
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.backend.rule=PathPrefix(`/api`)"
+      - "traefik.http.routers.backend.entrypoints=web"
+    networks:
+      - pg_db
+      - traefik
+
+  pg_db:
+    image: postgres:16
+    restart: unless-stopped
+    labels:
+      - "io.portainer.accesscontrol.teams=devs,managers"
+    environment:
+      - POSTGRES_DB=${DB_NAME}
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - pg_db
+
+volumes:
+  pgdata:
+
+networks:
+  traefik:
+    name: traefik
+    external: true
+  pg_db:
